@@ -22,13 +22,13 @@ basicFont = pygame.font.SysFont(None, 48)
 GRID_WIDTH = WIDTH - 100
 BLOCK_SIZE = GRID_WIDTH // 8
 BOARD =[[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']]
+	[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+	[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+	[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+	[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+	[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+	[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+	[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']]
 TILE = WHITE
 OTHER_TILE = BLACK
 def drawTitle():
@@ -178,7 +178,6 @@ while True:
             pygame.quit()
             sys.exit()
         if not moreMoves(BOARD,TILE) and not moreMoves(BOARD,OTHER_TILE):
-        	print(True)
         	gameOver()
         if event.type == MOUSEBUTTONUP:
         	b = whereToDrawCircle(event.pos[0],event.pos[1])
@@ -195,124 +194,3 @@ while True:
 	        			gameOver()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-board =[[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-		[' ', ' ', ' ', 'X', 'O', ' ', ' ', ' '],
-		[' ', ' ', ' ', 'O', 'X', ' ', ' ', ' '],
-		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-		[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']]
-TILE = 'X'
-OTHER_TILE = 'O'
-
-def make_move(board,move,tile):
-	x,y = move
-	possibles = []
-	if onBoard(x,y) and board[x][y] == ' ':
-		for xdirection, ydirection in [[0, 1], [1, 1], [1, 0], [1, -1],[0, -1], [-1, -1], [-1, 0], [-1, 1]]:
-			possibles += function(x+xdirection,y+ydirection,xdirection,ydirection,board,tile)
-	return possibles
-def affect_move(x,y,spots,tile):
-	if spots:
-		board[x][y] = tile
-		for x,y in spots:
-			board[x][y] = tile
-
-
-def function(x,y,xdirection,ydirection,board,tile):
-	other_tile = OTHER_TILE if TILE == tile else TILE
-	possibles = []
-	if onBoard(x,y):
-		if board[x][y] == other_tile:
-			while True:
-				possibles.append([x,y])
-				x += xdirection
-				y += ydirection
-				if onBoard(x,y):
-					if board[x][y] == tile:
-						return possibles
-					if board[x][y]==' ':
-						return []
-				else:
-					return []
-		if board[x][y] == tile or board==' ':
-			return []
-	return []
-def onBoard(x,y):
-	return x>=0 and x<=7 and y>=0 and y<=7
-def pc_move(board):
-	copy = board.copy()
-	if make_move(board,[0,0],OTHER_TILE) != []:
-		affect_move(0,0,make_move(board,[0,0],OTHER_TILE),OTHER_TILE)
-		drawBoard(board)
-
-	if make_move(board,[0,7],OTHER_TILE) != []:
-		affect_move(0,7,make_move(board,[0,7],OTHER_TILE),OTHER_TILE)
-		drawBoard(board)
-
-	if make_move(board,[7,0],OTHER_TILE) != []:
-		affect_move(7,0,make_move(board,[7,0],OTHER_TILE),OTHER_TILE)
-		drawBoard(board)
-
-	if make_move(board,[7,7],OTHER_TILE) != []:
-		affect_move(7,7,make_move(board,[7,7],OTHER_TILE),OTHER_TILE)
-		drawBoard(board)
-	else:
-		best = []
-		xc,yc = None,None
-		for x in range(8):
-			for y in range(8):
-				if len(make_move(board,[x,y],OTHER_TILE)) > len(best):
-					xc,yc = x,y
-					best = make_move(board,[x,y],OTHER_TILE)
-		if best != []:
-			affect_move(xc,yc,best,OTHER_TILE)
-			drawBoard(board)
-				
-def drawBoard(board):
-	# Print the board passed to this function. Return None.
-	print('  01234567')
-	print(' +--------+')
-	for x in range(8):
-		print('%s|' % x, end='')
-		for y in range(8):
-			print(board[x][y], end='')
-		print('|%s' % x)
-	print(' +--------+')
-	print('  01234567')
-# drawBoard(board)
-# while True:
-# 	inp = input()
-# 	if inp == 'q':
-# 		break
-# 	x,y = inp[0],inp[1]	
-# 	spots = make_move(board,[int(x),int(y)],TILE)
-# 	affect_move(int(x),int(y),spots,TILE)
-# 	drawBoard(board)
-# 	pc_move(board)
